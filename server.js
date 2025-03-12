@@ -185,7 +185,7 @@ app.post("/register", async (req, res) => {
       return res.status(400).json({ success: false, message: "Invalid shift selection." });
     }
 
-    const existingUser = await Registereduser.findOne({ registerNumber });
+    const existingUser = await Registereduser.findOne({ registerNumber,email });
     if (existingUser) {
       return res.status(400).json({ success: false, message: "Register Number already registered." });
     }
