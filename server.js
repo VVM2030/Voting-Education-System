@@ -370,31 +370,6 @@ app.get("/api/candidate", async (req, res) => {
   }
 });
 
-app.post("/api/checkIsMinor", async (req, res) => {
-  try {
-    const { aadharNo } = req.body;
-
-    if (!aadharNo) {
-      return res.status(400).json({ message: "Aadhar number is required." });
-    }
-
-    const aadharRecord = await DummyAadhar.findOne({ aadharNo });
-
-    if (!aadharRecord) {
-      return res.status(404).json({ message: "Aadhar number not found." });
-    }
-
-    if (aadharRecord.isMinor) {
-      return res.json({ isMinor: true, message: "User is a minor and not eligible to vote!" });
-    } else {
-      return res.json({ isMinor: false, message: "User is eligible to vote." });
-    }
-  } catch (error) {
-    console.error("Error checking minor status:", error);
-    res.status(500).json({ message: "Internal server error." });
-  }
-});
-
 app.post("/api/validateUser", async (req, res) => {
   try {
       const { registerNumber, department, year, shift, candidateId } = req.body;
