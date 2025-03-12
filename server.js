@@ -185,9 +185,16 @@ app.post("/register", async (req, res) => {
       return res.status(400).json({ success: false, message: "Invalid shift selection." });
     }
 
-    const existingUser = await Registereduser.findOne({ registerNumber,email });
+    const existingUser = await Registereduser.findOne({
+      $or: [{ registerNumber }, { email }]
+    });
     if (existingUser) {
-      return res.status(400).json({ success: false, message: "Register Number already registered." });
+      return res.status(400).json({
+        success: false,
+        message: existingUser.registerNumber === registerNumber
+          ? "Register Number already registered."
+          : "Email already registered."
+      });
     }
 
     const otp = Math.floor(100000 + Math.random() * 900000);
